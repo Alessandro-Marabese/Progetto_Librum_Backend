@@ -52,11 +52,13 @@ public class LibroService {
     }
 
     public Page<LibroResponse> findAllByAutore(String autore, Pageable pageable) {
-        return libroRepository.findByAutoreName(autore, pageable).map(this::fromEntity);
+        String likeParam = "%" + autore + "%";
+        return libroRepository.findAllByAutoreNameContainingOrderByAutoreNameAsc(likeParam, pageable).map(this::fromEntity);
     }
 
     public Page<LibroResponse> findAllByGenere(String genere, Pageable pageable) {
-        return libroRepository.findByGenereName(genere, pageable).map(this::fromEntity);
+        String likeParam = "%" + genere + "%";
+        return libroRepository.findAllByGeneriNameContainingOrderByGenereNameAsc(likeParam, pageable).map(this::fromEntity);
     }
 
     public Libro findById(String id) {
@@ -64,7 +66,8 @@ public class LibroService {
     }
 
     public Page<LibroResponse> findAllByTitolo(String titolo, Pageable pageable) {
-        return libroRepository.findByTitle(titolo, pageable).map(this::fromEntity);
+        String likeParam = "%" + titolo + "%";
+        return libroRepository.findAllByTitoloContainingOrderByTitoloAsc(likeParam, pageable).map(this::fromEntity);
     }
 
     @Transactional

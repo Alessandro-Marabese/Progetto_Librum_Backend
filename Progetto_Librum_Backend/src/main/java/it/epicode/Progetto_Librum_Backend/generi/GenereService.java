@@ -47,7 +47,8 @@ public class GenereService {
     }
 
     public Genere findGenereByName(String genereName) {
-        return genereRepository.findByName(genereName).orElseThrow(() -> new NotFoundException("Genere non trovato"));
+        String likeParam = "%" + genereName + "%";
+        return genereRepository.findByName(likeParam).orElseThrow(() -> new NotFoundException("Genere non trovato"));
     }
 
     public Page<GenereResponse> findAllGeneri(Pageable pageable) {

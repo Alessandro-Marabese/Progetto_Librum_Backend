@@ -24,7 +24,7 @@ public class GenreAndBookImport implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        try {
+        /*try {
             System.out.println("🔎 Scraping OpenLibrary subjects...");
             Document doc = Jsoup.connect("https://openlibrary.org/subjects").get();
 
@@ -57,13 +57,13 @@ public class GenreAndBookImport implements CommandLineRunner {
 
             for (Genere genre : genres) {
                 System.out.println("📘 Importing books for genre: " + genre.getId());
-                importService.importBooksBySubject(genre.getId(), 20);
+                importService.importBooksBySubject(genre.getId(), 5);
             }
 
             System.out.println("🏁 Import completed!");
 
         } catch (IOException e) {
             System.err.println("❌ Error fetching genres: " + e.getMessage());
-        }
+        }*/
     }
 }

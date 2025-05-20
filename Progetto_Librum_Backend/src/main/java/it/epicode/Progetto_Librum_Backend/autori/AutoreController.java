@@ -2,9 +2,12 @@ package it.epicode.Progetto_Librum_Backend.autori;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,10 +16,23 @@ import org.springframework.web.bind.annotation.*;
 public class AutoreController {
     private final AutoreService autoreService;
 
+    @Transactional
     @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("isAuthenticated()")
-    public Page<AutoreResponse> findAll(Pageable pageable) {
+    public Page<AutoreResponse> findAll(@RequestParam(defaultValue = "0") int page,
+                                        @RequestParam(defaultValue = "10") int size,
+                                        @RequestParam(defaultValue = "name") String sortBy,
+                                        @RequestParam(defaultValue = "asc") String direction) {
+        if (!sortBy.equals("name")) {
+            throw new IllegalArgumentException("Campo di ordinamento non valido: " + sortBy);
+        }
+
+        Pageable pageable = PageRequest.of(
+                page,
+                size,
+                direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending()
+        );
         return autoreService.findAll(pageable);
     }
 

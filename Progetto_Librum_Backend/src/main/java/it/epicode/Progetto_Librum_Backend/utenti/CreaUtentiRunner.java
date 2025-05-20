@@ -20,7 +20,7 @@ public class CreaUtentiRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        for (int i = 0; i < 10; i++) {
+        /*for (int i = 0; i < 10; i++) {
             Utente utente = new Utente();
             utente.setNome(faker.name().firstName());
             utente.setCognome(faker.name().lastName());
@@ -40,6 +40,6 @@ public class CreaUtentiRunner implements CommandLineRunner {
         admin.setAvatar("https://ui-avatars.com/api/?name=" + admin.getNome() + "+" + admin.getCognome());
         admin.setPassword(passwordEncoder.encode("pwdadmin"));
         admin.setRoles(Set.of(Role.ROLE_ADMIN));
-        utenteRepository.save(admin);
+        utenteRepository.save(admin);*/
     }
 }

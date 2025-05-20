@@ -2,9 +2,12 @@ package it.epicode.Progetto_Librum_Backend.libri;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,24 +16,39 @@ import org.springframework.web.bind.annotation.*;
 public class LibroController {
     private final LibroService libroService;
 
+    @Transactional
     @GetMapping("/autore/{autore}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("isAuthenticated()")
-    public Page<LibroResponse> findAllByAutore(@PathVariable String autore, Pageable pageable) {
+    public Page<LibroResponse> findAllByAutore(@PathVariable String autore,
+                                               @RequestParam(defaultValue = "0") int page,
+                                               @RequestParam(defaultValue = "10") int size,
+                                               @RequestParam(defaultValue = "asc") String direction) {
+        Pageable pageable = PageRequest.of(page, size);
         return libroService.findAllByAutore(autore, pageable);
     }
 
+    @Transactional
     @GetMapping("/genere/{genere}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("isAuthenticated()")
-    public Page<LibroResponse> findAllByGenere(@PathVariable String genere, Pageable pageable) {
+    public Page<LibroResponse> findAllByGenere(@PathVariable String genere,
+                                               @RequestParam(defaultValue = "0") int page,
+                                               @RequestParam(defaultValue = "10") int size,
+                                               @RequestParam(defaultValue = "asc") String direction) {
+        Pageable pageable = PageRequest.of(page, size);
         return libroService.findAllByGenere(genere, pageable);
     }
 
+    @Transactional
     @GetMapping("/titolo/{titolo}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("isAuthenticated()")
-    public Page<LibroResponse> findAllByTitolo(@PathVariable String titolo, Pageable pageable) {
+    public Page<LibroResponse> findAllByTitolo(@PathVariable String titolo,
+                                               @RequestParam(defaultValue = "0") int page,
+                                               @RequestParam(defaultValue = "10") int size,
+                                               @RequestParam(defaultValue = "asc") String direction) {
+        Pageable pageable = PageRequest.of(page, size);
         return libroService.findAllByTitolo(titolo, pageable);
     }
 

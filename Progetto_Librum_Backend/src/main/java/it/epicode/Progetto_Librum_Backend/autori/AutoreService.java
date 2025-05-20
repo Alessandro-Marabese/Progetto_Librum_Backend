@@ -56,7 +56,8 @@ public class AutoreService {
     }
 
     public Autore findByName(String autoreName) {
-        return autoreRepository.findByName(autoreName).orElseThrow(() -> new NotFoundException("Autore non trovato"));
+        String likeParam = "%" + autoreName + "%";
+        return autoreRepository.findByName(likeParam).orElseThrow(() -> new NotFoundException("Autore non trovato"));
     }
 
     public Page<AutoreResponse> findAll(Pageable pageable) {
