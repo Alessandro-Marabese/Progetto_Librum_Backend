@@ -23,6 +23,7 @@ public class Libro {
     private String titolo;
 
     @Lob
+    @Basic(fetch = FetchType.EAGER)
     private String descrizione;
 
     private String coverUrl;

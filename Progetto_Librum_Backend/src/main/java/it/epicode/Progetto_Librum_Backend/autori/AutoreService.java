@@ -5,12 +5,14 @@ import it.epicode.Progetto_Librum_Backend.generi.Genere;
 import it.epicode.Progetto_Librum_Backend.generi.GenereRepository;
 import it.epicode.Progetto_Librum_Backend.libri.Libro;
 import it.epicode.Progetto_Librum_Backend.libri.LibroRepository;
+import it.epicode.Progetto_Librum_Backend.libri.LibroResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.stream.Collectors;
@@ -55,9 +57,20 @@ public class AutoreService {
         return autoreRepository.findById(id).orElseThrow(() -> new NotFoundException("Autore non trovato"));
     }
 
-    public Autore findByName(String autoreName) {
+    @Transactional
+    public AutoreResponse findByName(String autoreName) {
         String likeParam = "%" + autoreName + "%";
-        return autoreRepository.findByName(likeParam).orElseThrow(() -> new NotFoundException("Autore non trovato"));
+        Autore autore = autoreRepository.findByName(likeParam).orElseThrow(() -> new NotFoundException("Autore non trovato"));
+        return new AutoreResponse(
+                autore.getId(),
+                autore.getName(),
+                autore.getBio(),
+                autore.getPhotoUrl(),
+                autore.getDataNascita(),
+                autore.getDataMorte(),
+                autore.getGeneri().stream().map(Genere::getName).collect(Collectors.toSet()),
+                autore.getLibri().stream().map(Libro::getTitolo).collect(Collectors.toSet())
+        );
     }
 
     public Page<AutoreResponse> findAll(Pageable pageable) {

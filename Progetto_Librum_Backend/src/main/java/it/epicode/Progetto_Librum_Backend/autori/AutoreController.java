@@ -46,7 +46,7 @@ public class AutoreController {
     @GetMapping("/nome/{autoreName}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("isAuthenticated()")
-    public Autore findByName(@PathVariable String autoreName) {
+    public AutoreResponse findByName(@PathVariable String autoreName) {
         return autoreService.findByName(autoreName);
     }
 

@@ -24,6 +24,7 @@ public class Autore {
     private String name;
 
     @Lob
+    @Basic(fetch = FetchType.EAGER)
     private String bio;
 
     private String photoUrl;

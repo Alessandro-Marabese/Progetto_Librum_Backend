@@ -29,6 +29,17 @@ public class LibroController {
     }
 
     @Transactional
+    @GetMapping("/autore/id/{autoreId}")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("isAuthenticated()")
+    public Page<LibroResponse> findAllByAutoreId(@PathVariable String autoreId,
+                                                 @RequestParam(defaultValue = "0") int page,
+                                                 @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return libroService.findAllByAutoreId(autoreId, pageable);
+    }
+
+    @Transactional
     @GetMapping("/genere/{genere}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("isAuthenticated()")
@@ -52,10 +63,11 @@ public class LibroController {
         return libroService.findAllByTitolo(titolo, pageable);
     }
 
-    @GetMapping("/id/{id}")
+
+    @GetMapping("/id")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("isAuthenticated()")
-    public Libro findById(@PathVariable String id) {
+    public LibroResponse findById(@RequestParam("id") String id) {
         return libroService.findById(id);
     }
 

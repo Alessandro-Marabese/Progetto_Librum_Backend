@@ -56,13 +56,30 @@ public class LibroService {
         return libroRepository.findAllByAutoreNameContainingOrderByAutoreNameAsc(likeParam, pageable).map(this::fromEntity);
     }
 
+    public Page<LibroResponse> findAllByAutoreId(String autoreId, Pageable pageable) {
+        return libroRepository.findAllByAutoreId(autoreId, pageable)
+                .map(this::fromEntity);
+    }
+
     public Page<LibroResponse> findAllByGenere(String genere, Pageable pageable) {
         String likeParam = "%" + genere + "%";
         return libroRepository.findAllByGeneriNameContainingOrderByGenereNameAsc(likeParam, pageable).map(this::fromEntity);
     }
 
-    public Libro findById(String id) {
-        return libroRepository.findById(id).orElse(null);
+    @Transactional
+    public LibroResponse findById(String id) {
+        Libro libro = libroRepository.findById(id).orElse(null);
+        if (libro == null) return null;
+
+        return new LibroResponse(
+                libro.getId(),
+                libro.getTitolo(),
+                libro.getDescrizione(), // il campo LOB, ora accessibile
+                libro.getCoverUrl(),
+                libro.getPrimoAnnoPubblicazione(),
+                libro.getAutori().stream().map(Autore::getName).collect(Collectors.toSet()),
+                libro.getGeneri().stream().map(Genere::getName).collect(Collectors.toSet())
+        );
     }
 
     public Page<LibroResponse> findAllByTitolo(String titolo, Pageable pageable) {
