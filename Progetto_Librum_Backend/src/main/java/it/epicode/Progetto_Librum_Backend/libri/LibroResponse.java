@@ -1,7 +1,5 @@
 package it.epicode.Progetto_Librum_Backend.libri;
 
-import it.epicode.Progetto_Librum_Backend.autori.Autore;
-import it.epicode.Progetto_Librum_Backend.generi.Genere;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

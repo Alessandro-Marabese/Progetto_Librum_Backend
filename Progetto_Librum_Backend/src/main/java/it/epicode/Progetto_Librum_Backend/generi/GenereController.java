@@ -28,7 +28,7 @@ public class GenereController {
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("isAuthenticated()")
     public Page<GenereResponse> getAllGeneri( @RequestParam(defaultValue = "0") int page,
-                                              @RequestParam(defaultValue = "10") int size,
+                                              @RequestParam(defaultValue = "100") int size,
                                               @RequestParam(defaultValue = "name") String sortBy,
                                               @RequestParam(defaultValue = "asc") String direction) {
         if (!sortBy.equals("name")) {
