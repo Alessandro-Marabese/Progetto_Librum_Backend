@@ -27,7 +27,7 @@ public class UserBookController {
     @GetMapping("/{utenteId}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("isAuthenticated()")
-    public List<LibroResponse> getAllByUtenteId(@PathVariable("utenteId") Long userId) {
+    public List<UserBookResponse> getAllByUtenteId(@PathVariable("utenteId") Long userId) {
         return userBookService.findAllByUtenteId(userId);
     }
 

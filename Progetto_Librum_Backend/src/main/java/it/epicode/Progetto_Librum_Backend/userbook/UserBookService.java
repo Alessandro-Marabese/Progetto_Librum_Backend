@@ -42,11 +42,10 @@ public class UserBookService {
     }
 
     @Transactional
-    public List<LibroResponse> findAllByUtenteId(Long utenteId) {
+    public List<UserBookResponse> findAllByUtenteId(Long utenteId) {
         return userBookRepository.findByUtenteId(utenteId)
                 .stream()
-                .map(UserBook::getLibro)
-                .map(this::fromEntityLibro)
+                .map(this::fromEntity)
                 .toList();
     }
 
@@ -62,13 +61,16 @@ public class UserBookService {
     }
 
     public UserBookResponse fromEntity(UserBook userBook) {
-        UserBookResponse userBookResponse = new UserBookResponse();
-        userBookResponse.setUtente(userBook.getUtente().getId());
-        userBookResponse.setLibro(userBook.getLibro().getId());
-        userBookResponse.setStatoLettura(userBook.getStatoLettura());
-        userBookResponse.setDataInizio(userBook.getDataInizio());
-        userBookResponse.setDataFine(userBook.getDataFine());
-        return userBookResponse;
+        Libro libro = userBook.getLibro();
+
+        LibroResponse libroResponse = fromEntityLibro(libro);
+        return new UserBookResponse(
+                userBook.getUtente().getId(),
+                libroResponse,
+                userBook.getStatoLettura(),
+                userBook.getDataInizio(),
+                userBook.getDataFine()
+        );
     }
 
     public LibroResponse fromEntityLibro(Libro libro) {
