@@ -3,12 +3,14 @@ package it.epicode.Progetto_Librum_Backend.libri;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import it.epicode.Progetto_Librum_Backend.autori.Autore;
 import it.epicode.Progetto_Librum_Backend.generi.Genere;
+import it.epicode.Progetto_Librum_Backend.reviews.Review;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -47,6 +49,9 @@ public class Libro {
     )
     @JsonManagedReference
     private Set<Genere> generi = new HashSet<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Review> reviews;
 
     @Override
     public boolean equals(Object o) {

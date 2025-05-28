@@ -2,6 +2,7 @@ package it.epicode.Progetto_Librum_Backend.utenti;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import it.epicode.Progetto_Librum_Backend.auth.Role;
+import it.epicode.Progetto_Librum_Backend.reviews.Review;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,6 +12,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -34,6 +36,9 @@ public class Utente implements UserDetails {
     @ToString.Exclude
     @JsonIgnore
     private String password;
+
+    @OneToMany(mappedBy = "user")
+    private List<Review> reviews;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
