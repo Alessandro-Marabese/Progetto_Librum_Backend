@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ReviewRequest {
     @NotBlank(message = "Il commento non può essere vuoto")
-    private String comment;
+    private String commento;
     @NotNull(message = "Il rating non può essere nullo")
     private int rating;
 

@@ -1,11 +1,13 @@
 package it.epicode.Progetto_Librum_Backend.reviews.commenti;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class CommentoController {
     private final CommentoService commentoService;
 
+    @Transactional
     @GetMapping("/review/{reviewId}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("isAuthenticated()")
@@ -25,6 +28,7 @@ public class CommentoController {
         return commentoService.findAllByReviewId(reviewId, pageable);
     }
 
+    @Transactional
     @GetMapping("/utente/{utenteId}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("isAuthenticated()")
@@ -39,7 +43,7 @@ public class CommentoController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("isAuthenticated()")
-    public Commento save(@RequestBody CommentoRequest commentoRequest) {
+    public CommentoResponse save(@Valid @RequestBody CommentoRequest commentoRequest) {
         return commentoService.createCommento(commentoRequest);
     }
 

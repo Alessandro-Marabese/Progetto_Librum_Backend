@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -16,10 +17,11 @@ import org.springframework.web.bind.annotation.*;
 public class ReviewController {
     private final ReviewService reviewService;
 
+    @Transactional
     @GetMapping("/libro/{libroId}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("isAuthenticated()")
-    public Page<ReviewResponse> findAllByLibro(@PathVariable String libroId,
+    public Page<ReviewResponse> findAllByLibro(@RequestParam String libroId,
                                                @RequestParam(defaultValue = "0") int page,
                                                @RequestParam(defaultValue = "10") int size,
                                                @RequestParam(defaultValue = "asc") String direction) {
@@ -27,6 +29,7 @@ public class ReviewController {
         return reviewService.findAllByLibro(libroId, pageable);
     }
 
+    @Transactional
     @GetMapping("/utente/{utenteId}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("isAuthenticated()")
