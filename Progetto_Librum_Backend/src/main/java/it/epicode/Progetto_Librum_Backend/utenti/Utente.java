@@ -3,6 +3,7 @@ package it.epicode.Progetto_Librum_Backend.utenti;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import it.epicode.Progetto_Librum_Backend.auth.Role;
 import it.epicode.Progetto_Librum_Backend.reviews.Review;
+import it.epicode.Progetto_Librum_Backend.reviews.commenti.Commento;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -37,8 +38,11 @@ public class Utente implements UserDetails {
     @JsonIgnore
     private String password;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "utente")
     private List<Review> reviews;
+
+    @OneToMany(mappedBy = "utente")
+    private List<Commento> commenti;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

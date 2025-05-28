@@ -50,7 +50,7 @@ public class Libro {
     @JsonManagedReference
     private Set<Genere> generi = new HashSet<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "libro")
     private List<Review> reviews;
 
     @Override

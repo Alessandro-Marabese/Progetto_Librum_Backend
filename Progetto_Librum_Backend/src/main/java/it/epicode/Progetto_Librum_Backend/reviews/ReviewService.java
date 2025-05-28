@@ -26,7 +26,7 @@ public class ReviewService {
 
     public Page<ReviewResponse> findAllByLibro(String libroId, Pageable pageable) {
         Libro libro = libroRepository.findById(libroId).orElseThrow(() -> new NotFoundException("Libro non trovato"));
-        return reviewRepository.findAllByBookId(libroId, pageable)
+        return reviewRepository.findAllByLibroId(libroId, pageable)
                 .map(this::fromEntity);
     }
 

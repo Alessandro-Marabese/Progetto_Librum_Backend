@@ -1,5 +1,6 @@
 package it.epicode.Progetto_Librum_Backend.reviews;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -40,8 +41,9 @@ public class ReviewController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("isAuthenticated()")
-    public Review save(@RequestBody ReviewRequest reviewRequest) {
-        return reviewService.createReview(reviewRequest);
+    public ReviewResponse save(@Valid @RequestBody ReviewRequest reviewRequest) {
+        Review review = reviewService.createReview(reviewRequest);
+        return reviewService.fromEntity(review);
     }
 
     @DeleteMapping("/{id}")
