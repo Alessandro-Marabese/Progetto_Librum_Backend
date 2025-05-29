@@ -18,7 +18,7 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @Transactional
-    @GetMapping("/libro/{libroId}")
+    @GetMapping("/libro")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("isAuthenticated()")
     public Page<ReviewResponse> findAllByLibro(@RequestParam String libroId,

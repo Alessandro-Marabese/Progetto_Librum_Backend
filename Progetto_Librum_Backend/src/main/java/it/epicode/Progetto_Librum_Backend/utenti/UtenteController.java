@@ -39,8 +39,8 @@ public class UtenteController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/current-user")
-    public Utente getCurrentUser(@AuthenticationPrincipal Utente utente) {
-        return utente;
+    public UtenteResponse getCurrentUser(@AuthenticationPrincipal Utente utente) {
+        return utenteService.fromEntity(utente);
     }
 
     @PostMapping("/register")

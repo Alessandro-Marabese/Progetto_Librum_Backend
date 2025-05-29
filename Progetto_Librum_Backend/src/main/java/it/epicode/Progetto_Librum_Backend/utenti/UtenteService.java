@@ -132,4 +132,16 @@ public class UtenteService {
         utente.setAvatar(cloudinaryService.uploadImage(file));
         utenteRepository.save(utente);
     }
+
+    public UtenteResponse fromEntity(Utente utente) {
+        UtenteResponse utenteResponse = new UtenteResponse();
+        utenteResponse.setId(utente.getId());
+        utenteResponse.setNome(utente.getNome());
+        utenteResponse.setCognome(utente.getCognome());
+        utenteResponse.setEmail(utente.getEmail());
+        utenteResponse.setUsername(utente.getUsername());
+        utenteResponse.setRoles(utente.getRoles());
+        utenteResponse.setAvatar(utente.getAvatar());
+        return utenteResponse;
+    }
 }

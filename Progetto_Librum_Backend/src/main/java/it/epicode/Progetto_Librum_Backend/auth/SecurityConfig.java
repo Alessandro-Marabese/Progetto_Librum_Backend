@@ -36,7 +36,6 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-
                 .csrf(csrf -> csrf.disable()) // Disabilita CSRF
                 .authorizeHttpRequests(authorize -> authorize
                         //.requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll() // Accesso libero a Swagger
