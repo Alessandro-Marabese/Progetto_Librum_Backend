@@ -33,7 +33,7 @@ public class UtenteController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Utente findById(@PathVariable Long id) {
+    public UtenteResponse findById(@PathVariable Long id) {
         return utenteService.getUtenteById(id);
     }
 
@@ -67,7 +67,7 @@ public class UtenteController {
     @PreAuthorize("isAuthenticated()")
     @PatchMapping(value = "/{id}/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public Utente uploadImage(@PathVariable Long id, @RequestPart MultipartFile file) {
+    public UtenteResponse uploadImage(@PathVariable Long id, @RequestPart MultipartFile file) {
         utenteService.uploadImage(id, file);
         return utenteService.getUtenteById(id);
     }

@@ -10,6 +10,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReviewResponse {
+    private Long id;
     private String commento;
     private Integer rating;
     private LocalDate dataCreazione;

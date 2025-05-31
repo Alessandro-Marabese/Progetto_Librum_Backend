@@ -60,6 +60,7 @@ public class ReviewService {
 
     public ReviewResponse fromEntity(Review review) {
         ReviewResponse reviewResponse = new ReviewResponse();
+        reviewResponse.setId(review.getId());
         reviewResponse.setCommento(review.getCommento());
         reviewResponse.setRating(review.getRating());
         reviewResponse.setDataCreazione(review.getDataCreazione());

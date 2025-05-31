@@ -46,6 +46,18 @@ public class UtenteService {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
+    public UtenteResponse fromEntity(Utente utente) {
+        UtenteResponse utenteResponse = new UtenteResponse();
+        utenteResponse.setId(utente.getId());
+        utenteResponse.setNome(utente.getNome());
+        utenteResponse.setCognome(utente.getCognome());
+        utenteResponse.setEmail(utente.getEmail());
+        utenteResponse.setUsername(utente.getUsername());
+        utenteResponse.setRoles(utente.getRoles());
+        utenteResponse.setAvatar(utente.getAvatar());
+        return utenteResponse;
+    }
+
     public Utente registerUtente(UtenteAuthRequest request) throws MessagingException {
         if(utenteRepository.existsByUsername(request.getUsername())) {
             throw new EntityExistsException("Username già in uso");
@@ -104,8 +116,9 @@ public class UtenteService {
         return utenteRepository.findAll(pageable);
     }
 
-    public Utente getUtenteById(Long id) {
-        return utenteRepository.findById(id).orElseThrow(() -> new NotFoundException("Utente non trovato"));
+    public UtenteResponse getUtenteById(Long id) {
+        Utente utente = utenteRepository.findById(id).orElseThrow(() -> new NotFoundException("Utente non trovato"));
+        return fromEntity(utente);
     }
 
     public Utente updateUtente(Long id, UtenteRequest request, Utente  utenteCorrente) {
@@ -133,15 +146,5 @@ public class UtenteService {
         utenteRepository.save(utente);
     }
 
-    public UtenteResponse fromEntity(Utente utente) {
-        UtenteResponse utenteResponse = new UtenteResponse();
-        utenteResponse.setId(utente.getId());
-        utenteResponse.setNome(utente.getNome());
-        utenteResponse.setCognome(utente.getCognome());
-        utenteResponse.setEmail(utente.getEmail());
-        utenteResponse.setUsername(utente.getUsername());
-        utenteResponse.setRoles(utente.getRoles());
-        utenteResponse.setAvatar(utente.getAvatar());
-        return utenteResponse;
-    }
+
 }
