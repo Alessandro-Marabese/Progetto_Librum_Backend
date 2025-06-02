@@ -55,4 +55,11 @@ public class ReviewController {
     public void delete(@PathVariable Long id) {
         reviewService.deleteReview(id);
     }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("isAuthenticated()")
+    public ReviewResponse update(@PathVariable Long id, @Valid @RequestBody ReviewRequest reviewRequest) {
+        return reviewService.updateReview(id, reviewRequest);
+    }
 }

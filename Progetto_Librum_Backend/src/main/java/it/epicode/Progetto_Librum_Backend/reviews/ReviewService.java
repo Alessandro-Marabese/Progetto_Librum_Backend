@@ -58,6 +58,13 @@ public class ReviewService {
         reviewRepository.deleteById(id);
     }
 
+    public ReviewResponse updateReview(Long id, @Valid ReviewRequest reviewRequest) {
+        Review review = reviewRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Review non trovata"));
+        BeanUtils.copyProperties(reviewRequest, review);
+        return fromEntity(reviewRepository.save(review));
+    }
+
     public ReviewResponse fromEntity(Review review) {
         ReviewResponse reviewResponse = new ReviewResponse();
         reviewResponse.setId(review.getId());
