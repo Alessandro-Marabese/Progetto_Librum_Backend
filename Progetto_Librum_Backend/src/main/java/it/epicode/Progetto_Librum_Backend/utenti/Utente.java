@@ -5,14 +5,12 @@ import it.epicode.Progetto_Librum_Backend.auth.Role;
 import it.epicode.Progetto_Librum_Backend.reviews.Review;
 import it.epicode.Progetto_Librum_Backend.reviews.commenti.Commento;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -20,8 +18,10 @@ import java.util.Set;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "utenti")
 public class Utente implements UserDetails {
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
@@ -44,10 +44,18 @@ public class Utente implements UserDetails {
     @OneToMany(mappedBy = "utente")
     private List<Commento> commenti;
 
+    @ManyToMany
+    @JoinTable(
+            name = "utenti_amici",
+            joinColumns = @JoinColumn(name = "utente_id"),
+            inverseJoinColumns = @JoinColumn(name = "amico_id")
+    )
+    private Set<Utente> amici = new HashSet<>();
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream()
-                .map(role -> (GrantedAuthority) () -> role.name())
+                .map(role -> (GrantedAuthority) role::name)
                 .toList();
     }
 

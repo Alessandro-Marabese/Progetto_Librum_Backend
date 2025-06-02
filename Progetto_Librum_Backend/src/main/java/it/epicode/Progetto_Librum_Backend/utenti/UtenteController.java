@@ -73,6 +73,7 @@ public class UtenteController {
     }
 
     @PostMapping("/login")
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest loginRequest) {
         log.info("Login request:");
         String token = utenteService.authenticateUser(
@@ -80,5 +81,22 @@ public class UtenteController {
                 loginRequest.getPassword()
         );
         return ResponseEntity.ok(new AuthResponse(token));
+    }
+
+    @GetMapping("/amici/{utenteId}")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("isAuthenticated()")
+    public Page<UtenteResponse> getAmici(@PathVariable Long utenteId, @RequestParam(defaultValue = "0") int page,
+                                 @RequestParam(defaultValue = "10") int size,
+                                 @RequestParam(defaultValue = "id") String sortBy) {
+        return utenteService.getAmici(utenteId, page, size, sortBy);
+    }
+
+
+    @DeleteMapping("/amici/{utenteId}/{amicoId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("isAuthenticated()")
+    public void deleteAmico(@PathVariable Long utenteId, @PathVariable Long amicoId) {
+        utenteService.deleteFriend(utenteId, amicoId);
     }
 }

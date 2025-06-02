@@ -146,5 +146,20 @@ public class UtenteService {
         utenteRepository.save(utente);
     }
 
+    public Page<UtenteResponse> getAmici(Long utenteId, int page, int size, String sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+        Utente utente = utenteRepository.findById(utenteId).orElseThrow(() -> new IllegalArgumentException("Utente non trovato"));
+        return utenteRepository.findAmiciById(utenteId, pageable).map(this::fromEntity);
+    }
 
+    public void deleteFriend(Long utenteId, Long amicoId) {
+        Utente utente = utenteRepository.findById(utenteId).orElseThrow(() -> new IllegalArgumentException("Utente non trovato"));
+        Utente amico = utenteRepository.findById(amicoId).orElseThrow(() -> new IllegalArgumentException("Amico non trovato"));
+
+        utente.getAmici().remove(amico);
+        amico.getAmici().remove(utente);
+
+        utenteRepository.save(utente);
+        utenteRepository.save(amico);
+    }
 }
