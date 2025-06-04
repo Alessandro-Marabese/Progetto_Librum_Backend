@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,6 +48,16 @@ public class UserBookService {
                 .stream()
                 .map(this::fromEntity)
                 .toList();
+    }
+
+    @Transactional
+    public void updateStatoLettura (Long utenteId, String libroId, StatoLettura nuovoStato) {
+        Optional<UserBook> ub = userBookRepository.findByUtenteIdAndLibroId(utenteId, libroId);
+        if (ub.isPresent()) {
+            UserBook userBook = ub.get();
+            userBook.setStatoLettura(nuovoStato);
+            userBookRepository.save(userBook);
+        }
     }
 
     public void deleteBookFromUser(Long utenteId, String libroId) {

@@ -1,8 +1,10 @@
 package it.epicode.Progetto_Librum_Backend.reviews;
 
+import it.epicode.Progetto_Librum_Backend.autori.Autore;
 import it.epicode.Progetto_Librum_Backend.exception.NotFoundException;
 import it.epicode.Progetto_Librum_Backend.libri.Libro;
 import it.epicode.Progetto_Librum_Backend.libri.LibroRepository;
+import it.epicode.Progetto_Librum_Backend.libri.LibroResponse;
 import it.epicode.Progetto_Librum_Backend.utenti.Utente;
 import it.epicode.Progetto_Librum_Backend.utenti.UtenteRepository;
 import jakarta.validation.Valid;
@@ -13,6 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
+
+import java.util.stream.Collectors;
 
 
 @Service
@@ -66,13 +70,20 @@ public class ReviewService {
     }
 
     public ReviewResponse fromEntity(Review review) {
+        Libro libro = review.getLibro();
+        LibroResponse libroDTO = new LibroResponse();
+        libroDTO.setId(libro.getId());
+        libroDTO.setTitolo(libro.getTitolo());
+        libroDTO.setCoverUrl(libro.getCoverUrl());
+        libroDTO.setNomiAutori(libro.getAutori().stream().map(Autore::getName).collect(Collectors.toSet()));
+
         ReviewResponse reviewResponse = new ReviewResponse();
         reviewResponse.setId(review.getId());
         reviewResponse.setCommento(review.getCommento());
         reviewResponse.setRating(review.getRating());
         reviewResponse.setDataCreazione(review.getDataCreazione());
         reviewResponse.setUtenteId(review.getUtente().getId());
-        reviewResponse.setLibroId(review.getLibro().getId());
+        reviewResponse.setLibro(libroDTO);
         return reviewResponse;
     }
 }

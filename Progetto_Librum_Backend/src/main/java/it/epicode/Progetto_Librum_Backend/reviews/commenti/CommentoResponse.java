@@ -10,6 +10,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommentoResponse {
+    private Long id;
     private String testo;
     private LocalDate dataCommento;
     private Long utenteId;

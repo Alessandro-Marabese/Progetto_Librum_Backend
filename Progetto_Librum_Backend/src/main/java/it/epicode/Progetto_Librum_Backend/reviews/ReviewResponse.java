@@ -1,5 +1,7 @@
 package it.epicode.Progetto_Librum_Backend.reviews;
 
+import it.epicode.Progetto_Librum_Backend.libri.Libro;
+import it.epicode.Progetto_Librum_Backend.libri.LibroResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,5 +17,5 @@ public class ReviewResponse {
     private Integer rating;
     private LocalDate dataCreazione;
     private Long utenteId;
-    private String libroId;
+    private LibroResponse libro;
 }

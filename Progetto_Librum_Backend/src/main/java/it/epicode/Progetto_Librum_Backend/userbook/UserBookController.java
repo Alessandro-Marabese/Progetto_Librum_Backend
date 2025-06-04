@@ -31,6 +31,14 @@ public class UserBookController {
         return userBookService.findAllByUtenteId(userId);
     }
 
+    @Transactional
+    @PutMapping("/{utenteId}")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("isAuthenticated()")
+    public void updateStatoLettura(@PathVariable Long utenteId,@RequestBody UpdateStatoLetturaDTO dto) {
+        userBookService.updateStatoLettura(utenteId, dto.getLibroId(), dto.getNuovoStato());
+    }
+
     @DeleteMapping("/{utenteId}/{bookId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("isAuthenticated()")

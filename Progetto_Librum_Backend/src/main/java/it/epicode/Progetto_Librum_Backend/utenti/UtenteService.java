@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -73,8 +74,13 @@ public class UtenteService {
         return utenteRepository.save(utente);
     }
 
-    public Optional<Utente> findByUsername(String username) {
-        return utenteRepository.findByUsername(username);
+    public Page<UtenteResponse> searchUsers(String query, Pageable pageable) {
+        Page<Utente> users = utenteRepository
+                .findByUsernameContainingIgnoreCaseOrNomeContainingIgnoreCaseOrCognomeContainingIgnoreCase(
+                        query, query, query, pageable
+                );
+
+        return users.map(this::fromEntity);
     }
 
     public String authenticateUser(String username, String password)  {
@@ -89,13 +95,7 @@ public class UtenteService {
             throw new SecurityException("Credenziali non valide", e);
         }
     }
-    public Utente loadUserByUsername(String username)  {
-        Utente utente = utenteRepository.findByUsername(username)
-                .orElseThrow(() -> new EntityNotFoundException("Utente non trovato con username: " + username));
 
-
-        return utente;
-    }
 
     public CommonResponse createUtente(UtenteRequest request) throws MessagingException {
         Utente utente = new Utente();
@@ -121,15 +121,12 @@ public class UtenteService {
         return fromEntity(utente);
     }
 
-    public Utente updateUtente(Long id, UtenteRequest request, Utente  utenteCorrente) {
-        boolean isAdmin = utenteCorrente.getRoles().contains(Role.ROLE_ADMIN);
-        if(utenteCorrente.getId() == id || isAdmin) {
+    public UtenteResponse updateUtente(Long id, UtenteRequest request, Utente  utenteCorrente) {
+
             Utente utente = utenteRepository.findById(id).orElseThrow(() -> new NotFoundException("Utente non trovato"));
             BeanUtils.copyProperties(request, utente);
-            return utenteRepository.save(utente);
-        } else {
-            throw new IllegalArgumentException("Non sei autorizzato a modificare questo utente");
-        }
+        Utente updated = utenteRepository.save(utente);
+        return fromEntity(updated);
     }
     public void deleteUtente(Long id) {
         if (!utenteRepository.existsById(id)) {

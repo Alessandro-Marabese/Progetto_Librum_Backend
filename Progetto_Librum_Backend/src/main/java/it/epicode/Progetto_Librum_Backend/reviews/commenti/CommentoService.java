@@ -64,6 +64,7 @@ public class CommentoService {
 
     public CommentoResponse fromEntity(Commento commento) {
         CommentoResponse commentoResponse = new CommentoResponse();
+        commentoResponse.setId(commento.getId());
         commentoResponse.setTesto(commento.getTesto());
         commentoResponse.setDataCommento(commento.getDataCommento());
         commentoResponse.setUtenteId(commento.getUtente().getId());
