@@ -42,16 +42,22 @@ public class CommentoService {
 
     @Transactional
     public Page<CommentoResponse> findAllByReviewId(Long reviewId, Pageable pageable) {
-        Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new IllegalArgumentException("Review not found"));
+        Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new IllegalArgumentException("Review non trovata"));
         return commentoRepository.findByReviewId(reviewId, pageable)
                 .map(this::fromEntity);
     }
 
     @Transactional
     public Page<CommentoResponse> findAllByUtenteId(Long utenteId, Pageable pageable) {
-        Utente utente = utenteRepository.findById(utenteId).orElseThrow(() -> new IllegalArgumentException("Utente not found"));
+        Utente utente = utenteRepository.findById(utenteId).orElseThrow(() -> new IllegalArgumentException("Utente non trovato"));
         return commentoRepository.findByUtenteId(utenteId, pageable)
                 .map(this::fromEntity);
+    }
+
+    public void updateCommento(Long commentoId, @Valid CommentoRequest request) {
+        Commento commento = commentoRepository.findById(commentoId).orElseThrow(() -> new IllegalArgumentException("Commento non trovato"));
+        commento.setTesto(request.getTesto());
+        commentoRepository.save(commento);
     }
 
     public void deleteCommento(Long commentoId) {

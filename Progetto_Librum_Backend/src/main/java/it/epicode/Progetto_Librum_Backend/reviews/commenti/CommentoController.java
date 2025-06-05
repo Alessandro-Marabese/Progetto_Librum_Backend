@@ -47,6 +47,13 @@ public class CommentoController {
         return commentoService.createCommento(commentoRequest);
     }
 
+    @PutMapping("/{commentoId}")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("isAuthenticated()")
+    public void updateCommento(@PathVariable Long commentoId, @Valid @RequestBody CommentoRequest commentoRequest) {
+        commentoService.updateCommento(commentoId, commentoRequest);
+    }
+
     @DeleteMapping("/{commentoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("isAuthenticated()")
