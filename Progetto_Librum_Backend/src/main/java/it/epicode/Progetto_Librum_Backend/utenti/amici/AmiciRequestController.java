@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/amici")
 @RequiredArgsConstructor
@@ -15,12 +17,12 @@ public class AmiciRequestController {
     @PostMapping("/sendRequest")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<String> sendRequest(@RequestParam Long senderId, @RequestParam Long receiverId) {
-        amiciRequestService.sendRequest(senderId, receiverId);
+    public ResponseEntity<String> sendRequest(@RequestBody AmiciRequestDTO amiciRequestDTO) {
+        amiciRequestService.sendRequest(amiciRequestDTO.getSenderId(), amiciRequestDTO.getReceiverId());
         return ResponseEntity.ok("Richiesta inviata con successo");
     }
 
-    @PostMapping("/acceptRequest/{requestId}")
+    @PutMapping("/acceptRequest/{requestId}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<String> acceptRequest(@PathVariable Long requestId) {
@@ -28,11 +30,18 @@ public class AmiciRequestController {
         return ResponseEntity.ok("Richiesta accettata con successo");
     }
 
-    @PostMapping("/declineRequest/{requestId}")
+    @PutMapping("/declineRequest/{requestId}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<String> declineRequest(@PathVariable Long requestId) {
         amiciRequestService.rejectRequest(requestId);
         return ResponseEntity.ok("Richiesta rifiutata con successo");
+    }
+
+    @GetMapping("/requests/{receiverId}/{stato}")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public List<AmiciRequestResponse> findAllByReceiverId(@PathVariable Long receiverId, @PathVariable StatoRichiesta stato) {
+        return amiciRequestService.findAllByReceiverId(receiverId, stato);
     }
 }

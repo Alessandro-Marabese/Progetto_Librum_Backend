@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.List;
+
 
 @Service
 @Validated
@@ -55,5 +57,19 @@ public class AmiciRequestService {
         amiciRequestRepository.save(request);
     }
 
+    public List<AmiciRequestResponse> findAllByReceiverId(Long receiverId, StatoRichiesta stato) {
+        return amiciRequestRepository.findByReceiverIdAndStatoAmicizia(receiverId, StatoRichiesta.PENDENTE).stream().map( this::fromEntity).toList();
+    }
 
+    public AmiciRequestResponse fromEntity(AmiciRequest amiciRequest) {
+        AmiciRequestResponse response = new AmiciRequestResponse();
+        response.setId(amiciRequest.getId());
+        response.setSenderId(amiciRequest.getSender().getId());
+        String fullName = amiciRequest.getSender().getNome() + " " + amiciRequest.getSender().getCognome();
+        response.setSenderName( fullName);
+        response.setReceiverId(amiciRequest.getReceiver().getId());
+        response.setStatoAmicizia(amiciRequest.getStatoAmicizia());
+        response.setDataRichiesta(amiciRequest.getDataRichiesta());
+        return response;
+    }
 }
