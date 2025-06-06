@@ -8,7 +8,6 @@ import it.epicode.Progetto_Librum_Backend.exception.NotFoundException;
 import it.epicode.Progetto_Librum_Backend.exception.UsernameException;
 import jakarta.mail.MessagingException;
 import jakarta.persistence.EntityExistsException;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,8 +24,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -59,7 +56,7 @@ public class UtenteService {
         return utenteResponse;
     }
 
-    public Utente registerUtente(UtenteAuthRequest request) throws MessagingException {
+    public void registerUtente(UtenteAuthRequest request) throws MessagingException {
         if(utenteRepository.existsByUsername(request.getUsername())) {
             throw new EntityExistsException("Username già in uso");
         }
@@ -71,7 +68,11 @@ public class UtenteService {
         utente.setPassword(passwordEncoder.encode(request.getPassword()));
         utente.setRoles(Set.of(Role.ROLE_USER));
         utente.setAvatar("https://ui-avatars.com/api/?name=" + utente.getNome() + "+" + utente.getCognome());
-        return utenteRepository.save(utente);
+        utenteRepository.save(utente);
+    }
+
+    public void logout() {
+
     }
 
     public Page<UtenteResponse> searchUsers(String query, Pageable pageable) {
